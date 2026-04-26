@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Pilot's Logbook</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- Welcome / no folder loaded yet -->
+<div id="welcome" class="welcome-screen">
+  <div class="stamp">The Pilot's Logbook</div>
+  <h2>A logbook of curated flights.</h2>
+  <p>Track missions you've flown. Add notes. Drop in screenshots from the sim. Keep a journal. Build your own custom missions. All your data lives in a folder on your computer that you control.</p>
+
+  <div class="welcome-warning" id="browser-warning" style="display:none;">
+    <strong>Heads up:</strong> Your browser doesn't support the File System Access API, which this app uses to read and write your logbook folder. Use Chrome, Edge, Opera, or Brave for the full experience. Firefox and Safari won't work yet.
+  </div>
+
+  <div class="welcome-actions">
+    <button class="btn btn-primary" id="open-folder-btn">Open Logbook Folder</button>
+    <button class="btn" id="create-folder-btn">Create New Logbook</button>
+  </div>
+
+  <p style="margin-top: 24px; font-size: 13px;">First time? <a href="README.md" style="color:var(--accent);">Read the README</a> for setup instructions.</p>
+</div>
+
+<!-- Main app (hidden until folder loaded) -->
+<div id="app" style="display:none;">
+
+  <header class="masthead">
+    <div class="masthead-row">
+      <div class="masthead-title">
+        <div class="sub" id="folder-name">— No folder loaded —</div>
+        <h1 id="logbook-title">The <em>Pilot's</em> Logbook</h1>
+        <div class="sub" id="logbook-subtitle"></div>
+      </div>
+      <div class="masthead-actions">
+        <button class="btn" id="journal-btn">📓 Journal</button>
+        <button class="btn" id="add-mission-btn">+ Mission</button>
+        <button class="btn" id="settings-btn">⚙</button>
+        <button class="btn" id="close-folder-btn" title="Close logbook">✕</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="toolbar">
+    <div class="toolbar-section">
+      <div class="progress-stat"><strong id="completed-count">0</strong>/ <span id="total-count">0</span> flown</div>
+      <div class="progress-stat"><strong id="completed-pct">0</strong>%</div>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+    <div class="toolbar-divider"></div>
+    <span class="save-status" id="save-status">Ready</span>
+  </div>
+
+  <div class="filter-bar">
+    <input type="text" class="filter-search" id="search-input" placeholder="Search missions…" />
+    <select class="filter-select" id="filter-category">
+      <option value="">All categories</option>
+    </select>
+    <select class="filter-select" id="filter-status">
+      <option value="">All status</option>
+      <option value="todo">To fly</option>
+      <option value="completed">Flown</option>
+    </select>
+  </div>
+
+  <div class="map-toggle" id="map-toggle">▼ Hide map</div>
+  <div id="map"></div>
+
+  <main id="missions-container">
+    <!-- Missions rendered here -->
+  </main>
+
+  <footer>
+    The Pilot's Logbook · <a href="https://github.com/" target="_blank" id="repo-link">View on GitHub</a> · Data stays in your folder
+  </footer>
+</div>
+
+<!-- Journal drawer -->
+<div class="drawer" id="journal-drawer">
+  <div class="drawer-header">
+    <h2>The Journal</h2>
+    <button class="modal-close" id="journal-close">×</button>
+  </div>
+  <div class="drawer-tabs">
+    <button class="drawer-tab active" data-tab="freeform">Freeform Notes</button>
+    <button class="drawer-tab" data-tab="entries">Dated Entries</button>
+  </div>
+  <div class="drawer-body" id="journal-body">
+    <!-- Tab content rendered here -->
+  </div>
+</div>
+
+<!-- Toast notifications -->
+<div class="toast" id="toast"></div>
+
+<!-- Templates / modals injected by JS -->
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
